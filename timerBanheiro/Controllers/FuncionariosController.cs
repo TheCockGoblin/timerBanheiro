@@ -55,6 +55,18 @@ namespace timerBanheiro.Controllers
            return View(funcionario);
         }
 
+        [HttpGet]
+        public IActionResult GetFuncionario(int id)
+        {
+            var func = funcionario.FirstOrDefault(c => c.id == id);
+            if (func == null)
+            {
+                return NotFound(); // Retorna 404 se o cartão não for encontrado
+            }
+
+            return Json(func);
+        }
+
     }
 };
 

@@ -5,13 +5,63 @@
     <head><title>Simulador de timer de banheiro (protótipo)</title></head>
     
     <body>
-        <button onclick="entrarBanheiro()">Entrar no banheiro com o cartão de identificação</button>
-        
+        <div id="foraBanheiro">
+            <button onclick="entrarBanheiro()">Entrar no banheiro com o cartão de identificação</button>
+            <div id="cronometro"></div>
+            <button onclick="jorge()">Eu sou Jorge</button>
+            <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
+            <button>Eu sou Amanda</button>
+            <button>Eu sou Lorena</button>
+        </div>
     </body>
 
     <script>
-        entrarBanheiro(){
+        var tempo = 0;
+
+        function getTempo(id)
+        {
+            $.ajax({
+                url: '@Url.Action("GetFuncionario", "Funcionario")',
+                type: 'GET',
+                data: {id: id},
+                success: function (data) { 
+                    tempo = data.tempoSecs;
+                    console.log(tempo);
+                }
+
+                }
+
+            )
+        }
+        function jorge()
+        {
             
+        }
+
+        function entrarBanheiro(var tempo)
+        {
+            let tempoInicial = tempo; // Por exemplo, 60 segundos
+
+            function atualizarCronometro() {
+                if (tempoInicial <= 0) ]
+                {
+                    document.getElementById("cronometro").innerHTML = "Tempo esgotado!";
+                    clearInterval(intervalo);
+                    return;
+                }
+
+                const minutos = Math.floor(tempoInicial / 60);
+                const segundos = tempoInicial % 60;
+
+                document.getElementById("cronometro").innerHTML =
+                    `${minutos}m ${segundos}s`;
+
+                tempoInicial--;
+            }
+
+            // Atualize o cronômetro a cada 1 segundo
+            const intervalo = setInterval(atualizarCronometro, 1000);
+            atualizarCronometro(tempo);
         }
 
     </script>
