@@ -2,68 +2,78 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-    <head><title>Simulador de timer de banheiro (protótipo)</title></head>
-    
-    <body>
-        <div id="foraBanheiro">
-            <button onclick="entrarBanheiro()">Entrar no banheiro com o cartão de identificação</button>
-            <div id="cronometro"></div>
-            <button onclick="jorge()">Eu sou Jorge</button>
-            <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
-            <button>Eu sou Amanda</button>
-            <button>Eu sou Lorena</button>
-        </div>
-    </body>
+<head>
+    <title>Simulador de timer de banheiro (protótipo)</title>
+</head>
 
-    <script>
-        var tempo = 0;
+<body>
+    <div id="foraBanheiro">
+        <button onclick="entrarBanheiro()">Entrar no banheiro com o cartão de identificação</button>
+        <div id="cronometro"></div>
+        <button onclick="jorge()">Eu sou Jorge</button>
+        <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
+        <button>Eu sou Amanda</button>
+        <button>Eu sou Lorena</button>
+    </div>
+</body>
 
-        function getTempo(id)
-        {
-            $.ajax({
-                url: '@Url.Action("GetFuncionario", "Funcionario")',
-                type: 'GET',
-                data: {id: id},
-                success: function (data) { 
-                    tempo = data.tempoSecs;
-                    console.log(tempo);
-                }
+<script>
+    var tempo = 0;
 
-                }
+    function getTempo(id) {
+        $.ajax({
+            url: '@Url.Action("GetFuncionario", "Funcionario")',
+            type: 'GET',
+            data: { id: id },
+            success: function (data) {
+                tempo = data.tempoSecs;
+                console.log(tempo);
+            }
+        });
+    }
 
-            )
-        }
-        function jorge()
-        {
-            
-        }
+    function jorge() {
+        // Adicione a lógica necessária aqui
+        console.log('Eu sou Jorge');
+    }
 
-        function entrarBanheiro(var tempo)
-        {
-            let tempoInicial = tempo; // Por exemplo, 60 segundos
+    function renatoAragao() {
+        // Adicione a lógica necessária aqui
+        console.log('Eu sou Renato Aragão');
+    }
 
-            function atualizarCronometro() {
-                if (tempoInicial <= 0) ]
-                {
-                    document.getElementById("cronometro").innerHTML = "Tempo esgotado!";
-                    clearInterval(intervalo);
-                    return;
-                }
+    function amanda() {
+        // Adicione a lógica necessária aqui
+        console.log('Eu sou Amanda');
+    }
 
-                const minutos = Math.floor(tempoInicial / 60);
-                const segundos = tempoInicial % 60;
+    function lorena() {
+        // Adicione a lógica necessária aqui
+        console.log('Eu sou Lorena');
+    }
 
-                document.getElementById("cronometro").innerHTML =
-                    `${minutos}m ${segundos}s`;
+    function entrarBanheiro() {
+        let tempoInicial = tempo; // Usa a variável global tempo
 
-                tempoInicial--;
+        function atualizarCronometro() {
+            if (tempoInicial <= 0) {
+                document.getElementById("cronometro").innerHTML = "Tempo esgotado!";
+                clearInterval(intervalo);
+                return;
             }
 
-            // Atualize o cronômetro a cada 1 segundo
-            const intervalo = setInterval(atualizarCronometro, 1000);
-            atualizarCronometro(tempo);
+            const minutos = Math.floor(tempoInicial / 60);
+            const segundos = tempoInicial % 60;
+
+            document.getElementById("cronometro").innerHTML =
+                `${minutos}m ${segundos}s`;
+
+            tempoInicial--;
         }
 
-    </script>
+        // Atualize o cronômetro a cada 1 segundo
+        const intervalo = setInterval(atualizarCronometro, 1000);
+        atualizarCronometro(); // Corrigido para não passar parâmetros
+    }
+</script>
 </html>
-
