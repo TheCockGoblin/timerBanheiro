@@ -5,7 +5,7 @@ namespace timerBanheiro.Controllers
 {
     public class FuncionariosController : Controller
     {
-        private static List<FuncionariosModel> funcionario = new List<FuncionariosModel>
+        private static List<FuncionariosModel> _funcionario = new List<FuncionariosModel>
         {
 
             new FuncionariosModel
@@ -52,16 +52,16 @@ namespace timerBanheiro.Controllers
 
         public IActionResult Index()
         {
-           return View(funcionario);
+           return View(_funcionario);
         }
 
         [HttpGet]
         public IActionResult GetFuncionario(int id)
         {
-            var func = funcionario.FirstOrDefault(c => c.id == id);
+            var func = _funcionario.FirstOrDefault(c => c.id == id);
             if (func == null)
             {
-                return NotFound(); // Retorna 404 se o cartão não for encontrado
+                return NotFound(); 
             }
 
             return Json(func);

@@ -1,28 +1,43 @@
 ﻿@model List<timerBanheiro.Models.FuncionariosModel>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
+<link href="~/css/site.css" rel="stylesheet" />
+<link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
+
 
 <head>
     <title>Simulador de timer de banheiro (protótipo)</title>
 </head>
-
 <body>
     <div id="foraBanheiro">
-        <button onclick="entrarBanheiro()">Entrar no banheiro com o cartão de identificação</button>
-        <div id="cronometro"></div>
-        <button onclick="jorge()">Eu sou Jorge</button>
-        <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
-        <button>Eu sou Amanda</button>
-        <button>Eu sou Lorena</button>
+        <a onclick="entrarBanheiro()" id="botEntrar" class="image-link">
+            <img src="/css/porta.png" alt="Imagem porta" class="porta">
+        </a>
+        <div id="bots">
+            <button onclick="jorge()">Eu sou Jorge</button>
+            <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
+            <button onclick="amanda()">Eu sou Amanda</button>
+            <button onclick="lorena()">Eu sou Lorena</button>
+        </div>
+    </div>
+    <div id="banheiro">
+
+        <div id="cronometro" class="cronometro_div"></div>
     </div>
 </body>
 
+</html>
 <script>
+
+    function trocarFundo() {
+        document.body.style.backgroundImage = "url(fundo-privada.jpg);";
+    }
+
     var tempo = 0;
 
     function getTempo(id) {
         $.ajax({
-            url: '@Url.Action("GetFuncionario", "Funcionario")',
+            url: '@Url.Action("GetFuncionario", "Funcionarios")',
             type: 'GET',
             data: { id: id },
             success: function (data) {
@@ -30,25 +45,27 @@
                 console.log(tempo);
             }
         });
+        document.getElementById("bots").style.display = "none";
+
     }
 
     function jorge() {
-        // Adicione a lógica necessária aqui
-        console.log('Eu sou Jorge');
+        getTempo(1);
+        console.log(tempo);
     }
 
     function renatoAragao() {
-        // Adicione a lógica necessária aqui
+        getTempo(2);
         console.log('Eu sou Renato Aragão');
     }
 
     function amanda() {
-        // Adicione a lógica necessária aqui
+        getTempo(3);
         console.log('Eu sou Amanda');
     }
 
     function lorena() {
-        // Adicione a lógica necessária aqui
+        getTempo(4);
         console.log('Eu sou Lorena');
     }
 
@@ -74,6 +91,10 @@
         // Atualize o cronômetro a cada 1 segundo
         const intervalo = setInterval(atualizarCronometro, 1000);
         atualizarCronometro(); // Corrigido para não passar parâmetros
+
+        document.getElementById("banheiro").style.display = "flex";
+        document.getElementById("foraBanheiro").style.display = "none";
+        document.getElementById("botEntrar").style.display = "none";
+        trocarFundo()
     }
 </script>
-</html>
