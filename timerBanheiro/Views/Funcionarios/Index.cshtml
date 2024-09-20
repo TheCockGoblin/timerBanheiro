@@ -13,6 +13,7 @@
         <a onclick="entrarBanheiro()" id="botEntrar" class="image-link">
             <img src="/css/porta.png" alt="Imagem porta" class="porta">
         </a>
+        <div id="desconto"></div>
         <div id="bots">
             <button onclick="jorge()">Eu sou Jorge</button>
             <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
@@ -21,7 +22,7 @@
         </div>
     </div>
     <div id="banheiro">
-
+        <div id="sair"><button onclick="sairBanheiro()">Sair do banheiro</button></div>
         <div id="cronometro" class="cronometro_div"></div>
     </div>
 </body>
@@ -31,9 +32,23 @@
 
     function trocarFundo() {
         document.body.style.backgroundImage = "url(fundo-privada.jpg);";
+        document.getElementById("sair").style.display = "flex";
+    }
+
+    function sairBanheiro() {
+        let desconto = descontoSalario;
+        document.getElementById("sair").style.display = "none";
+        document.getElementById("banheiro").style.display = "none";
+        document.getElementById("foraBanheiro").style.display = "flex";
+        document.getElementById("botEntrar").style.display = "flex";
+        if (desconto > 0) {
+            desconto = desconto * 5;
+            document.getElementById("desconto").innerHTML = `O desconto do seu salário será: ${desconto} reais`;
+        }
     }
 
     var tempo = 0;
+    var descontoSalario = 0;
 
     function getTempo(id) {
         $.ajax({
@@ -72,20 +87,30 @@
     function entrarBanheiro() {
         let tempoInicial = tempo; // Usa a variável global tempo
 
+
         function atualizarCronometro() {
             if (tempoInicial <= 0) {
-                document.getElementById("cronometro").innerHTML = "Tempo esgotado!";
-                clearInterval(intervalo);
-                return;
+                document.getElementById("cronometro").innerHTML = "Tempo esgotado! Seu salário está sendo descontado";
+                const minutos = Math.floor(tempoInicial / 60);
+                const segundos = tempoInicial % 60;
+
+                document.getElementById("cronometro").innerHTML =
+                    `Seu tempo acabou! Tempo que será descontado do salário: ${segundos}s`;
+
+                tempoInicial--;
+                descontoSalario++;
             }
 
-            const minutos = Math.floor(tempoInicial / 60);
-            const segundos = tempoInicial % 60;
+            else {
+                const minutos = Math.floor(tempoInicial / 60);
+                const segundos = tempoInicial % 60;
 
-            document.getElementById("cronometro").innerHTML =
-                `${minutos}m ${segundos}s`;
+                document.getElementById("cronometro").innerHTML =
+                    `${minutos}m ${segundos}s`;
 
-            tempoInicial--;
+                tempoInicial--;
+            }
+
         }
 
         // Atualize o cronômetro a cada 1 segundo
