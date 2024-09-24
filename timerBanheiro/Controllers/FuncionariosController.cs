@@ -66,14 +66,5 @@ namespace timerBanheiro.Controllers
 
             return Json(func);
         }
-
     }
 };
-
-
-
-    
-
-
-
- 

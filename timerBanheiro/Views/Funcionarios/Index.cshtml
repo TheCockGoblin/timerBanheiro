@@ -1,48 +1,57 @@
 ﻿@model List<timerBanheiro.Models.FuncionariosModel>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<link href="~/css/site.css" rel="stylesheet" />
-<link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
+    <head>
+        <title>Simulador de timer de banheiro (protótipo)</title>
+    </head>
 
-
-<head>
-    <title>Simulador de timer de banheiro (protótipo)</title>
-</head>
-<body>
-    <div id="foraBanheiro">
-        <a onclick="entrarBanheiro()" id="botEntrar" class="image-link">
-            <img src="/css/porta.png" alt="Imagem porta" class="porta">
-        </a>
-        <div id="desconto"></div>
-        <div id="bots">
-            <button onclick="jorge()">Eu sou Jorge</button>
-            <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
-            <button onclick="amanda()">Eu sou Amanda</button>
-            <button onclick="lorena()">Eu sou Lorena</button>
+    <body>
+        <div id="foraBanheiro">
+            <div id="desconto" class="desconto_div"></div>
+            <a onclick="entrarBanheiro()" id="botEntrar" class="image-link">
+                <img src="/css/porta.png" alt="Imagem porta" class="porta">
+            </a>
+            <div id="bots">
+                <button onclick="jorge()">Eu sou Jorge</button>
+                <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
+                <button onclick="amanda()">Eu sou Amanda</button>
+                <button onclick="lorena()">Eu sou Lorena</button>
+            </div>
         </div>
-    </div>
-    <div id="banheiro">
-        <div id="sair"><button onclick="sairBanheiro()">Sair do banheiro</button></div>
-        <div id="cronometro" class="cronometro_div"></div>
-    </div>
-</body>
-
+        
+        <div id="banheiro">
+            <div id="cronometro" class="cronometro_div"></div>
+            <div id="sair"><button onclick="sairBanheiro()">Sair do banheiro</button></div>
+        </div>
+        
+    </body>
 </html>
-<script>
 
-    function trocarFundo() {
-        document.body.style.backgroundImage = "url(fundo-privada.jpg);";
-        document.getElementById("sair").style.display = "flex";
-    }
+<script>
+     let fundoAtual = 1;
+     let intervalo = null; // Variável para armazenar o estado do cronômetro
+     document.body.style.backgroundImage = "url('/css/papel-de-parede-tijolos.png')";
+        function trocarFundo() {
+            if (fundoAtual === 1) {
+                document.body.style.backgroundImage = "url('/css/fundo-privada.jpg')";
+                fundoAtual = 2; // Altera para o segundo fundo
+            } else if (fundoAtual === 2) {
+                document.body.style.backgroundImage = "url('/css/papel-de-parede-tijolos.png')";
+                fundoAtual = 1; // Altera de volta para o primeiro fundo
+            }
+        }
 
     function sairBanheiro() {
+        trocarFundo()
         let desconto = descontoSalario;
         document.getElementById("sair").style.display = "none";
         document.getElementById("banheiro").style.display = "none";
         document.getElementById("foraBanheiro").style.display = "flex";
         document.getElementById("botEntrar").style.display = "flex";
         if (desconto > 0) {
-            desconto = desconto * 5;
+            desconto = desconto * 3;
             document.getElementById("desconto").innerHTML = `O desconto do seu salário será: ${desconto} reais`;
         }
     }
@@ -61,7 +70,6 @@
             }
         });
         document.getElementById("bots").style.display = "none";
-
     }
 
     function jorge() {
@@ -85,17 +93,28 @@
     }
 
     function entrarBanheiro() {
+        trocarFundo()
+        document.getElementById("banheiro").style.display = "flex";
+        document.getElementById("foraBanheiro").style.display = "none";
+        document.getElementById("botEntrar").style.display = "none";
+        document.getElementById("sair").style.display = "flex";
+
         let tempoInicial = tempo; // Usa a variável global tempo
 
+        // Se o cronômetro já está rodando, não criar outro
+        if (intervalo !== null) {
+            return; // Evita que o cronômetro seja reiniciado
+        }
 
         function atualizarCronometro() {
             if (tempoInicial <= 0) {
-                document.getElementById("cronometro").innerHTML = "Tempo esgotado! Seu salário está sendo descontado";
+                document.getElementById("cronometro").style.fontSize ="3rem";
+                document.getElementById("cronometro").style.color ="crimson";
                 const minutos = Math.floor(tempoInicial / 60);
                 const segundos = tempoInicial % 60;
 
                 document.getElementById("cronometro").innerHTML =
-                    `Seu tempo acabou! Tempo que será descontado do salário: ${segundos}s`;
+                    `Tempo que será descontado do salário: ${segundos} s`;
 
                 tempoInicial--;
                 descontoSalario++;
@@ -106,7 +125,7 @@
                 const segundos = tempoInicial % 60;
 
                 document.getElementById("cronometro").innerHTML =
-                    `${minutos}m ${segundos}s`;
+                    `${minutos}. ${segundos}`;
 
                 tempoInicial--;
             }
@@ -114,12 +133,7 @@
         }
 
         // Atualize o cronômetro a cada 1 segundo
-        const intervalo = setInterval(atualizarCronometro, 1000);
+        intervalo = setInterval(atualizarCronometro, 1000);
         atualizarCronometro(); // Corrigido para não passar parâmetros
-
-        document.getElementById("banheiro").style.display = "flex";
-        document.getElementById("foraBanheiro").style.display = "none";
-        document.getElementById("botEntrar").style.display = "none";
-        trocarFundo()
     }
 </script>
