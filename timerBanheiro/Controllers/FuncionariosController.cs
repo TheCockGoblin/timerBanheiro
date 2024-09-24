@@ -15,7 +15,7 @@ namespace timerBanheiro.Controllers
                 sexo = "H",
                 statusIdade = "2",
                 pcd = 0,
-                tempoSecs = 60 + 30
+                tempoSecs = 20
 
             },
 

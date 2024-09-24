@@ -1,50 +1,21 @@
 ﻿@model List<timerBanheiro.Models.FuncionariosModel>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <link href="~/css/site.css" rel="stylesheet" />
-    <link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
-    <head>
-        <title>Simulador de timer de banheiro (protótipo)</title>
-    </head>
-
-    <body>
-        <div id="foraBanheiro">
-            <div id="desconto" class="desconto_div"></div>
-            <a onclick="entrarBanheiro()" id="botEntrar" class="image-link">
-                <img src="/css/porta.png" alt="Imagem porta" class="porta">
-            </a>
-            <div id="bots">
-                <button onclick="jorge()">Eu sou Jorge</button>
-                <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
-                <button onclick="amanda()">Eu sou Amanda</button>
-                <button onclick="lorena()">Eu sou Lorena</button>
-            </div>
-        </div>
-        
-        <div id="banheiro">
-            <div id="cronometro" class="cronometro_div"></div>
-            <div id="sair"><button onclick="sairBanheiro()">Sair do banheiro</button></div>
-        </div>
-        
-    </body>
-</html>
-
 <script>
-     var tempoSair = 0;
-     var tempoInicial = 0;
-     var saiuBanheiro = false;
-     let fundoAtual = 1;
-     let intervalo = null; // Variável para armazenar o estado do cronômetro
-     document.body.style.backgroundImage = "url('/css/papel-de-parede-tijolos.png')";
-        function trocarFundo() {
-            if (fundoAtual === 1) {
-                document.body.style.backgroundImage = "url('/css/fundo-privada.jpg')";
-                fundoAtual = 2; // Altera para o segundo fundo
-            } else if (fundoAtual === 2) { 
-                document.body.style.backgroundImage = "url('/css/papel-de-parede-tijolos.png')";
-                fundoAtual = 1; // Altera de volta para o primeiro fundo
-            }
+    var tempoSair = 0;
+    var tempoInicial = 0;
+    var saiuBanheiro = false;
+    let fundoAtual = 1;
+    let intervalo = null; // Variável para armazenar o estado do cronômetro
+    document.body.style.backgroundImage = "url('/css/papel-de-parede-tijolos.png')";
+    function trocarFundo() {
+        if (fundoAtual === 1) {
+            document.body.style.backgroundImage = "url('/css/fundo-privada.jpg')";
+            fundoAtual = 2; // Altera para o segundo fundo
+        } else if (fundoAtual === 2) {
+            document.body.style.backgroundImage = "url('/css/papel-de-parede-tijolos.png')";
+            fundoAtual = 1; // Altera de volta para o primeiro fundo
         }
+    }
 
     var tempo = 0;
     var descontoSalario = 0;
@@ -83,12 +54,13 @@
     }
 
     function entrarBanheiro() {
+        descontoSalario = 0;
         if (saiuBanheiro == true)
-            tempoInicial = tempoSair;    
-        else{
+            tempoInicial = tempoSair;
+        else {
             tempoInicial = tempo;
         }
-        
+
         trocarFundo()
         document.getElementById("banheiro").style.display = "flex";
         document.getElementById("foraBanheiro").style.display = "none";
@@ -103,8 +75,8 @@
 
         function atualizarCronometro() {
             if (tempoInicial <= 0) {
-                document.getElementById("cronometro").style.fontSize ="3rem";
-                document.getElementById("cronometro").style.color ="crimson";
+                document.getElementById("cronometro").style.fontSize = "3rem";
+                document.getElementById("cronometro").style.color = "crimson";
                 const minutos = Math.floor(tempoInicial / 60);
                 const segundos = tempoInicial % 60;
 
@@ -123,7 +95,7 @@
                     `${minutos}. ${segundos}`;
 
                 tempoInicial--;
-          
+
             }
 
         }
@@ -134,6 +106,8 @@
     }
 
     function sairBanheiro() {
+        clearInterval(intervalo);
+
         tempoSair = tempoInicial;
         saiuBanheiro = true;
         trocarFundo()
@@ -148,3 +122,33 @@
         }
     }
 </script>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
+    <head>
+        <title>Simulador de timer de banheiro (protótipo)</title>
+    </head>
+
+    <body>
+        <div id="foraBanheiro">
+            <div id="desconto" class="desconto_div"></div>
+            <a onclick="entrarBanheiro()" id="botEntrar" class="image-link">
+                <img src="/css/porta.png" alt="Imagem porta" class="porta">
+            </a>
+            <div id="bots">
+                <button onclick="jorge()">Eu sou Jorge</button>
+                <button onclick="renatoAragao()">Eu sou Renato Aragão</button>
+                <button onclick="amanda()">Eu sou Amanda</button>
+                <button onclick="lorena()">Eu sou Lorena</button>
+            </div>
+        </div>
+        
+        <div id="banheiro">
+            <div id="cronometro" class="cronometro_div"></div>
+            <div id="sair"><button onclick="sairBanheiro()">Sair do banheiro</button></div>
+        </div>
+        
+    </body>
+</html>
+
