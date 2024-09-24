@@ -66,6 +66,8 @@
         document.getElementById("foraBanheiro").style.display = "none";
         document.getElementById("botEntrar").style.display = "none";
         document.getElementById("sair").style.display = "flex";
+        clearInterval(intervalo);
+        intervalo = null;
 
 
         // Se o cronômetro já está rodando, não criar outro
@@ -106,7 +108,6 @@
     }
 
     function sairBanheiro() {
-        clearInterval(intervalo);
 
         tempoSair = tempoInicial;
         saiuBanheiro = true;
