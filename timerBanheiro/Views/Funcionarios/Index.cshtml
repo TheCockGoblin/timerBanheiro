@@ -30,6 +30,9 @@
 </html>
 
 <script>
+     var tempoSair = 0;
+     var tempoInicial = 0;
+     var saiuBanheiro = false;
      let fundoAtual = 1;
      let intervalo = null; // Variável para armazenar o estado do cronômetro
      document.body.style.backgroundImage = "url('/css/papel-de-parede-tijolos.png')";
@@ -37,24 +40,11 @@
             if (fundoAtual === 1) {
                 document.body.style.backgroundImage = "url('/css/fundo-privada.jpg')";
                 fundoAtual = 2; // Altera para o segundo fundo
-            } else if (fundoAtual === 2) {
+            } else if (fundoAtual === 2) { 
                 document.body.style.backgroundImage = "url('/css/papel-de-parede-tijolos.png')";
                 fundoAtual = 1; // Altera de volta para o primeiro fundo
             }
         }
-
-    function sairBanheiro() {
-        trocarFundo()
-        let desconto = descontoSalario;
-        document.getElementById("sair").style.display = "none";
-        document.getElementById("banheiro").style.display = "none";
-        document.getElementById("foraBanheiro").style.display = "flex";
-        document.getElementById("botEntrar").style.display = "flex";
-        if (desconto > 0) {
-            desconto = desconto * 3;
-            document.getElementById("desconto").innerHTML = `O desconto do seu salário será: ${desconto} reais`;
-        }
-    }
 
     var tempo = 0;
     var descontoSalario = 0;
@@ -93,13 +83,18 @@
     }
 
     function entrarBanheiro() {
+        if (saiuBanheiro == true)
+            tempoInicial = tempoSair;    
+        else{
+            tempoInicial = tempo;
+        }
+        
         trocarFundo()
         document.getElementById("banheiro").style.display = "flex";
         document.getElementById("foraBanheiro").style.display = "none";
         document.getElementById("botEntrar").style.display = "none";
         document.getElementById("sair").style.display = "flex";
 
-        let tempoInicial = tempo; // Usa a variável global tempo
 
         // Se o cronômetro já está rodando, não criar outro
         if (intervalo !== null) {
@@ -128,6 +123,7 @@
                     `${minutos}. ${segundos}`;
 
                 tempoInicial--;
+          
             }
 
         }
@@ -135,5 +131,20 @@
         // Atualize o cronômetro a cada 1 segundo
         intervalo = setInterval(atualizarCronometro, 1000);
         atualizarCronometro(); // Corrigido para não passar parâmetros
+    }
+
+    function sairBanheiro() {
+        tempoSair = tempoInicial;
+        saiuBanheiro = true;
+        trocarFundo()
+        let desconto = descontoSalario;
+        document.getElementById("sair").style.display = "none";
+        document.getElementById("banheiro").style.display = "none";
+        document.getElementById("foraBanheiro").style.display = "flex";
+        document.getElementById("botEntrar").style.display = "flex";
+        if (desconto > 0) {
+            desconto = desconto * 5;
+            document.getElementById("desconto").innerHTML = `O desconto do seu salário será: ${desconto} reais`;
+        }
     }
 </script>
